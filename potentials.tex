@@ -1,0 +1,204 @@
+\documentclass{report}
+  \usepackage{amsmath}
+  \usepackage{amssymb}
+  \usepackage{mathrsfs}
+  \usepackage{geometry}
+    \geometry{letterpaper,left=1in,right=1in,top=1in,bottom=1in}
+  \usepackage{bm}
+  \usepackage{graphicx}
+    \graphicspath{ {figures/} }
+  \usepackage{float}
+  \usepackage{subfiles}
+  \usepackage{physics}
+  \usepackage{mathtools}
+  \usepackage[shortlabels]{enumitem}
+
+
+  \newcommand{\dbar}{{d\mkern-7mu\mathchar'26\mkern-2mu}}
+
+  \usepackage{xcolor}
+  \usepackage{framed}
+  \definecolor{shadecolor}{gray}{0.9}
+
+  \DeclareMathOperator{\comb}{comb}
+  \DeclareMathOperator{\rect}{rect}
+  \DeclareMathOperator{\sinc}{sinc}
+
+\begin{document}
+\section{General solution}
+  We seek a general solution to Laplace's equation on a rectangle $0\leq x \leq L$ and $0\leq y \leq H$:
+  \begin{equation}
+    \nabla^2 V(x,y) = 0,
+  \end{equation}
+  subject to
+  \begin{equation}
+    \begin{cases}
+      V(x,0) = v_1(x) &\quad \text{(I)}\\
+      V(x,H) = v_2(x) &\quad \text{(II)}\\
+      V(0,y) = v_3(y) &\quad \text{(III)}\\
+      V(L,y) = v_4(y) &\quad \text{(IV)}
+    \end{cases}
+  \end{equation}
+  Because Laplace's equation is a linear equation, each boundary condition can be satisfied separately then the final solution can be superimposed.
+
+  First, consider the boundary conditions
+  \begin{equation}
+    \begin{cases}
+      V(x,0) = v_1(x) &\quad \text{(I)}\\
+      V(x,H) = 0 &\quad \text{(II)}\\
+      V(0,y) = 0 &\quad \text{(III)}\\
+      V(L,y) = 0 &\quad \text{(IV)}
+    \end{cases}
+  \end{equation}
+  Beginning with the Laplace equation in 2D
+  \begin{equation}
+    \nabla^2 V = 0.
+  \end{equation}
+  Assume a seperable solution $V(x,y) = X(x)Y(y)$. Then equation 1 becomes
+  \begin{align}
+    0 &= \nabla^2 X(x)Y(y)\\
+    &= Y\pdv[2]{X}{x} + X\pdv[2]{Y}{y} \\
+    & = \frac{1}{X}\pdv[2]{X}{x} + \frac{1}{Y}\pdv[2]{Y}{y}
+  \end{align}
+  Choosing a separation constant $k^2$ then the general solutions are
+  \begin{align}
+    \pdv[2]{X}{x} &= -k^2X\\
+    \pdv[2]{Y}{y} &= k^2Y
+  \end{align}
+  Considering the $x$-part, the general solutions are of the form
+  \begin{equation}
+    X(x) = A \sin(kx) + B \cos(kx)
+  \end{equation}
+  Imposing the boundary conditions (III) and (IV) gives the requirement
+  \begin{equation}
+    X(0) = X(L) = 0
+  \end{equation}
+  Which gives
+  \begin{equation}
+    X(x) = \sum_{n=0}^\infty A_n\sin(\frac{n\pi}{L}x)
+  \end{equation}
+
+  Then the $y$-part has general solutions of the form
+  \begin{equation}
+    Y(y) = C \sinh(\frac{n\pi}{L} (y-H)) + D \cosh(\frac{n\pi}{L} (y-H))
+  \end{equation}
+  choosing the shift in $y$ by $H$ to satisfy boundary condition (II), $V(x,H) = 0$, this implies that $D=0$ as well. This gives the solution
+  \begin{equation}
+    Y(y) = C \sinh(\frac{n\pi}{L} (y-H))
+  \end{equation}
+  And total solution
+  \begin{equation}
+    V(x,y) = \sum_{n=0}^\infty A_n \sinh(\frac{n\pi}{L} (y-H)) \sin(\frac{n\pi}{L}x)
+  \end{equation}
+
+  To satisfy boundary condition (I), let $v_1(x,0)$ be decomposed into a fourier series
+  \begin{equation}
+    v_1(x,0) = \sum_{n=0}^\infty a_n \sin(\frac{n\pi}{L}x),
+  \end{equation}
+  where
+  \begin{equation}
+    a_n = \frac{2}{L} \int_0^L \dd{x} v_1(x) \sin(\frac{n\pi}{L}x).
+  \end{equation}
+  Which gives
+  \begin{equation}
+    A_n = \frac{a_n}{\sinh(-\frac{n\pi H}{L})}.
+  \end{equation}
+
+  Thus for the first set of conditions
+  \begin{equation}
+    \boxed{V_1(x,y) = \sum_{n=0}^\infty A_{n} \sinh(\frac{n\pi}{L} (y-H)) \sin(\frac{n\pi}{L}x)},
+  \end{equation}
+  with
+  \begin{equation}
+    \boxed{A_{n} = \frac{2/L}{\sinh(-\frac{n\pi H}{L})}  \int_0^L \dd{x} v_1(x) \sin(\frac{n\pi}{L}x)}.
+  \end{equation}
+
+
+  Then for the second set of boundary conditions
+  \begin{equation}
+    \begin{cases}
+      V(x,0) = 0 &\quad \text{(I)}\\
+      V(x,H) = v_2(x) &\quad \text{(II)}\\
+      V(0,y) = 0 &\quad \text{(III)}\\
+      V(L,y) = 0 &\quad \text{(IV)}
+    \end{cases}
+  \end{equation}
+  \begin{equation}
+    \boxed{V_2(x,y) = \sum_{n=0}^\infty B_{n} \sinh(\frac{n\pi}{L} y) \sin(\frac{n\pi}{L}x)},
+  \end{equation}
+  with
+  \begin{equation}
+    \boxed{B_{n} = \frac{2/L}{\sinh(\frac{n\pi H}{L})}  \int_0^L \dd{x} v_2(x) \sin(\frac{n\pi}{L}x)}.
+  \end{equation}
+
+
+  By the symmetry of $x$ and $y$ upon interchange this gives for boundary condition set
+  \begin{equation}
+    \begin{cases}
+      V(x,0) = 0 &\quad \text{(I)}\\
+      V(x,H) = 0 &\quad \text{(II)}\\
+      V(0,y) = v_3(y) &\quad \text{(III)}\\
+      V(L,y) = 0 &\quad \text{(IV)}
+    \end{cases}
+  \end{equation}
+  \begin{equation}
+    \boxed{V_3(x,y) = \sum_{n=0}^\infty C_{n} \sinh(\frac{n\pi}{H} (x - L)) \sin(\frac{n\pi}{H}y)},
+  \end{equation}
+  with
+  \begin{equation}
+    \boxed{C_{n} = \frac{2/H}{\sinh(-\frac{n\pi L}{H})}  \int_0^H \dd{y} v_3(y) \sin(\frac{n\pi}{H}y)}.
+  \end{equation}
+
+  And finally
+  \begin{equation}
+    \begin{cases}
+      V(x,0) = 0 &\quad \text{(I)}\\
+      V(x,H) = 0 &\quad \text{(II)}\\
+      V(0,y) = 0 &\quad \text{(III)}\\
+      V(L,y) = v_4(y) &\quad \text{(IV)}
+    \end{cases}
+  \end{equation}
+  \begin{equation}
+    \boxed{V_4(x,y) = \sum_{n=0}^\infty D_{n} \sinh(\frac{n\pi}{H} x) \sin(\frac{n\pi}{H}y)},
+  \end{equation}
+  with
+  \begin{equation}
+    \boxed{D_{n} = \frac{2/H}{\sinh(\frac{n\pi L}{H})}  \int_0^H \dd{y} v_4(y) \sin(\frac{n\pi}{H}y)}.
+  \end{equation}
+
+\section{Solution on a square}
+  Now considering the solution to the problem on a square:
+  \begin{equation}
+    H \to H = L
+  \end{equation}
+  and
+  \begin{equation}
+    \begin{cases}
+      V(x,0) = v_1(x) &\quad \text{(I)}\\
+      V(x,L) = v_2(x) &\quad \text{(II)}\\
+      V(0,y) = v_3(y) &\quad \text{(III)}\\
+      V(L,y) = v_4(y) &\quad \text{(IV)}
+    \end{cases}
+  \end{equation}
+
+  Then
+  \begin{equation}
+    \boxed{
+    \begin{aligned}
+      V(x,y) = \sum_{n=0}^\infty \Bigg\{\left[A_{n} \sinh(\frac{n\pi}{L} (y-L)) +
+      B_{n} \sinh(\frac{n\pi}{L} y)\right] \sin(\frac{n\pi}{L}x)\\ +
+      \left[C_{n} \sinh(\frac{n\pi}{L} (x - L)) +
+      D_{n} \sinh(\frac{n\pi}{L} x) \right]\sin(\frac{n\pi}{L}y)  \Bigg\}
+    \end{aligned}}
+  \end{equation}
+  where
+  \begin{align}
+    A_{n} &= \frac{2/L}{\sinh(-n\pi)}  \int_0^L \dd{x} v_1(x) \sin(\frac{n\pi}{L}x) \\
+    B_{n} &= \frac{2/L}{\sinh(n\pi)}  \int_0^L \dd{x} v_2(x) \sin(\frac{n\pi}{L}x) \\
+    C_{n} &= \frac{2/L}{\sinh(-n\pi)}  \int_0^L \dd{y} v_3(y) \sin(\frac{n\pi}{L}y) \\
+    D_{n} &= \frac{2/L}{\sinh(n\pi)}  \int_0^L \dd{y} v_4(y) \sin(\frac{n\pi}{L}y).
+  \end{align}
+
+
+
+\end{document}
